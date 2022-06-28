@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+}
+
+.assignment-details-content {
+  color: rgba(50, 54, 58, 0.87);
+  font-family: Roboto,Helvetica Neue,sans-serif;
+  font-size: 14px;
+}
+
+.assignment-fields-title {
+  margin: 12px 0;
+  font-size: 16px;
+}
+
+.mat-card-subtitle {
+  color: rgba(50, 54, 58, 0.54);
+}
+
+.assignment-fields-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.assignment-fields-column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 12px;
+}
