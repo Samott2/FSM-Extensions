@@ -1,0 +1,10 @@
+{
+  "name": "PP Extra Fields",
+  "provider": "Ghost",
+  "description": "Extra fields for partner portal",
+  "version": "1.0.0",
+  "useShellSDK": true,
+  "outletPositions": [
+    "PP_ASSIGNMENT_DETAILS_1"
+  ]
+}
