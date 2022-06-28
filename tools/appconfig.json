@@ -1,7 +1,7 @@
  {
-  "name": "Nástroje",
+  "name": "Nástroje v2",
   "provider": "Anodius, a.s.",
-  "description": "Nástroje",
+  "description": "Nástroje v2",
   "version": "1.0.0",
   "icon": "https://raw.githubusercontent.com/Anodius-FSM/FSM-Extensions/main/tools/icon.svg",
   "useShellSDK": true,
