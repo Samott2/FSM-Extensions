@@ -40,19 +40,7 @@
         "isDefault": false,
         "children": []
       },
-      {
-        "pathSegment": "approval",
-        "labelTranslations": [
-          {
-            "lang": "sk",
-            "value": "Schvaľovanie"
-          }
-        ],
-        "viewUrl": "/#/approval",
-        "icon": "approvals",
-        "isDefault": false,
-        "children": []
-      },
+      
       {
         "pathSegment": "warehouse",
         "labelTranslations": [
