@@ -1,7 +1,7 @@
  {
-  "name": "Nástroje v2",
+  "name": "Nástroje Slovanet, a. s.",
   "provider": "Anodius, a.s.",
-  "description": "Nástroje v2",
+  "description": "Nástroje Slovanet, a. s.",
   "version": "1.0.0",
   "icon": "https://raw.githubusercontent.com/Anodius-FSM/FSM-Extensions/main/tools/icon.svg",
   "useShellSDK": true,
@@ -40,17 +40,16 @@
         "isDefault": false,
         "children": []
       },
-      
       {
-        "pathSegment": "warehouse",
+        "pathSegment": "approval",
         "labelTranslations": [
           {
             "lang": "sk",
-            "value": "Sklad"
+            "value": "Schvaľovanie"
           }
         ],
-        "viewUrl": "/#/warehouse",
-        "icon": "customer-order-entry",
+        "viewUrl": "/#/approval",
+        "icon": "approvals",
         "isDefault": false,
         "children": []
       }
