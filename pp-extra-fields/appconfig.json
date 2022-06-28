@@ -1,7 +1,7 @@
 {
-  "name": "PP Extra Fields",
-  "provider": "Ghost",
-  "description": "Extra fields for partner portal",
+  "name": "PP Extra polia",
+  "provider": "Anodius, a.s.",
+  "description": "Extra polia pre Partnerský Portál",
   "version": "1.0.0",
   "useShellSDK": true,
   "outletPositions": [
