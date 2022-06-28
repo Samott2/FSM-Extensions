@@ -3,7 +3,7 @@
   "provider": "Anodius, a.s.",
   "description": "Nástroje",
   "version": "1.0.0",
-  "icon": "https://raw.githubusercontent.com/f-kaps/fsm-ext-demo-uf4jra/main/icon.svg",
+  "icon": "https://raw.githubusercontent.com/Anodius-FSM/FSM-Extensions/main/tools/icon.svg",
   "useShellSDK": true,
   "outletPositions": [
 		"SHELL_HOME_SCREEN"
