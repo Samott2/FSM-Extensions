@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Service contract available</title>
+    <link href="https://unpkg.com/fundamental-styles" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+  </head>
+  <body>
+    <div>
+      <div class="assignment-details-content">
+        <div class="assignment-fields-title">Servisné volanie</div>
+        <div class="assignment-fields-container">
+          <div class="assignment-fields-row">
+            <div class="assignment-fields-column">
+              <mat-card-subtitle class="mat-card-subtitle">
+                Kód SV
+              </mat-card-subtitle>
+              <span data-property="serviceCallCode"></span>
+            </div>
+            <div class="assignment-fields-column">
+              <mat-card-subtitle class="mat-card-subtitle">
+                Kód Aktivity
+              </mat-card-subtitle>
+              <span data-property="activityCode"></span>
+            </div>
+          </div>
+          <div class="assignment-fields-row">
+            <div class="assignment-fields-column">
+              <mat-card-subtitle class="mat-card-subtitle">
+                Predmet
+              </mat-card-subtitle>
+              <span data-property="serviceCallSubject"></span>
+            </div>
+          </div>
+          <div class="assignment-fields-row">
+            <div class="assignment-fields-column">
+              <mat-card-subtitle class="mat-card-subtitle">
+                Zadanie práce
+              </mat-card-subtitle>
+              <span data-property="serviceCallRemarks"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="assignment-fields-title">Zákazník</div>
+        <div class="assignment-fields-container">
+          <div class="assignment-fields-row">
+            <div class="assignment-fields-column">
+              <mat-card-subtitle class="mat-card-subtitle">
+                Názov zákazníka
+              </mat-card-subtitle>
+              <span data-property="businessPartnerName"></span>
+            </div>
+            <div class="assignment-fields-column">
+              <mat-card-subtitle class="mat-card-subtitle">
+                ID zákazníka
+              </mat-card-subtitle>
+              <span data-property="businessPartnerCode"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="assignment-fields-title">Adresa</div>
+        <div class="assignment-fields-container">
+          <div class="assignment-fields-row">
+            <div class="assignment-fields-column">
+              <mat-card-subtitle class="mat-card-subtitle">
+                Ulica
+              </mat-card-subtitle>
+              <span data-property="addressStreet"></span>
+            </div>
+            <div class="assignment-fields-column">
+              <mat-card-subtitle class="mat-card-subtitle">
+                Číslo domu
+              </mat-card-subtitle>
+              <span data-property="addressStreetNo"></span>
+            </div>
+          </div>
+          <div class="assignment-fields-row">
+            <div class="assignment-fields-column">
+              <mat-card-subtitle class="mat-card-subtitle">
+                PSČ
+              </mat-card-subtitle>
+              <span data-property="addressZipCode"></span>
+            </div>
+            <div class="assignment-fields-column">
+              <mat-card-subtitle class="mat-card-subtitle">
+                Mesto
+              </mat-card-subtitle>
+              <span data-property="addressCity"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="assignment-fields-title">Kontaktné údaje</div>
+        <div class="assignment-fields-container">
+          <div class="assignment-fields-row">
+            <div class="assignment-fields-column">
+              <mat-card-subtitle class="mat-card-subtitle">
+                Tel. číslo
+              </mat-card-subtitle>
+              <span data-property="serviceCallPhone"></span>
+            </div>
+            <div class="assignment-fields-column">
+              <mat-card-subtitle class="mat-card-subtitle">
+                E-mail
+              </mat-card-subtitle>
+              <span data-property="serviceCallEmail"></span>
+            </div>
+          </div>
+        </div>
+  
+        <div class="assignment-fields-title">Dalšie</div>
+        <div class="assignment-fields-container">
+          <div class="assignment-fields-row">
+            <div class="assignment-fields-column">
+              <mat-card-subtitle class="mat-card-subtitle">
+                Kvalifikácie
+              </mat-card-subtitle>
+              <span data-property="requirement"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../vendor/fsm-shell.js"></script>
+    <script src="../vendor/luigi-client.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>
