@@ -1,0 +1,45 @@
+ {
+  "name": "Nástroje Partner",
+  "provider": "Anodius, a.s.",
+  "description": "Nástroje Partner",
+  "version": "1.0.0",
+  "icon": "https://raw.githubusercontent.com/Anodius-FSM/FSM-Extensions/main/nastroje-partner/icon.svg",
+  "useShellSDK": true,
+  "outletPositions": [
+		"SHELL_HOME_SCREEN"
+	],
+  "extensionPolicies": [
+    "allow-downloads"
+  ],
+  "shellNavigation": {
+    "icon": "activities",
+    "sideNavigation": [
+      {
+        "pathSegment": "approval",
+        "labelTranslations": [
+          {
+            "lang": "sk",
+            "value": "Schvaľovanie"
+          }
+        ],
+        "viewUrl": "/#/approval",
+        "icon": "approvals",
+        "isDefault": false,
+        "children": []
+      },
+      {
+        "pathSegment": "warehouse",
+        "labelTranslations": [
+          {
+            "lang": "sk",
+            "value": "Sklad"
+          }
+        ],
+        "viewUrl": "/#/warehouse",
+        "icon": "customer-order-entry",
+        "isDefault": false,
+        "children": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Managmement Tools</title>
+    <link href="https://cdn.jsdelivr.net/npm/fundamental-styles@0.21.0/dist/fundamental-styles.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="extension-body">
+      <div id="extension-main" class="extension-main">
+        <section id="section-price-list" class="section-hidden screenw">
+          <h2 class="fd-title fd-title--h2">Cenník</h2>
+          <button
+            class="fd-button"
+            onclick="ui.withErrorHandling(priceList.exportPriceList)"
+          >
+            Exportovať
+          </button>
+          <label
+            class="fd-button"
+            for="input-price-list"
+          >
+            Nahrať
+          </label>
+          <input
+            type="file"
+            accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            id="input-price-list"
+            onchange="ui.withErrorHandling(priceList.importPriceList)"
+            style="opacity:0"
+          >
+
+          <h2 class="fd-title fd-title--h2">Km cenník</h2>
+          <button
+            class="fd-button"
+            onclick="ui.withErrorHandling(kmPriceList.exportPriceList)"
+          >
+            Exportovať
+          </button>
+          <label
+            class="fd-button"
+            for="input-price-list-km"
+          >
+            Nahrať
+          </label>
+          <input
+            type="file"
+            accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            id="input-price-list-km"
+            onchange="ui.withErrorHandling(kmPriceList.importPriceList)"
+            style="opacity:0"
+          >
+        </section>
+
+
+        <section id="section-authorization-supplier" class="section-hidden screenw">
+          <button
+            class="fd-button"
+            onclick="ui.withErrorHandling(authorizationSupplier.exportAuthorizationSupplier)"
+          >
+            Exportovať
+          </button>
+          <label
+            class="fd-button"
+            for="input-authorization-supplier"
+          >
+            Nahrať
+          </label>
+          <input
+            type="file"
+            accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            id="input-authorization-supplier"
+            onchange="ui.withErrorHandling(authorizationSupplier.importAuthorizationSupplier)"
+            style="opacity:0"
+          >
+        </section>
+
+
+        <section id="section-approval" class="section-hidden screen" style="min-height: 700px;">
+          <div>
+            <div class="fd-popover fd-popover--left fd-user-menu" id="popoverBusinessPartnerList">
+              <div class="fd-popover__control">
+                <button class="fd-button fd-button--menu" onclick="ui.toggleAttribute('aria-hidden', '#popoverBusinessPartnerList .fd-popover__body')">
+                  <i class="sap-icon--slim-arrow-down"></i>
+                  <span class="fd-button__text" id="lblSelectedBusinessPartner">Meno partnera</span>
+                </button>
+              </div>
+            
+              <div class="fd-popover__body fd-popover__body--left" aria-hidden="true">
+                <div class="fd-popover__body-header">
+                  <div class="fd-bar fd-bar--cozy fd-bar--header-with-subheader">
+                    <div class="fd-bar__left">
+                      <div class="fd-bar__element">
+                        <button aria-label="Späť" class="fd-button fd-button--transparent" onclick="ui.toggleAttribute('aria-hidden', '#popoverBusinessPartnerList .fd-popover__body')">
+                          <i class="sap-icon--navigation-left-arrow"></i>
+                        </button>
+                      </div>
+            
+                      <div class="fd-bar__element">Meno partnera</div>
+                    </div>
+                  </div>
+            
+                  <div class="fd-bar fd-bar--subheader">
+                    <div class="fd-bar__middle">
+                      <div class="fd-input-group">
+                        <input class="fd-input fd-input--compact fd-input-group__input" type="text" name=""
+                          aria-label="Hľadať" placeholder="Hľadať" onkeypress="event.keyCode === 13 && approval.searchBusinessPartner(this.value)">
+                        <span class="fd-input-group__addon fd-input-group__addon--button fd-input-group__addon--compact">
+                          <button class="fd-input-group__button fd-button fd-button--icon fd-button--transparent"
+                            aria-label="Hľadať">
+                            <i class="sap-icon--search"></i>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            
+                <div class="fd-menu--compact" id="divBusinessPartners">
+                </div>
+              </div>
+            </div>
+
+            <div class="fd-popover fd-popover--left fd-user-menu" id="popoverPeriodList">
+              <div class="fd-popover__control">
+                <button class="fd-button fd-button--menu" onclick="ui.toggleAttribute('aria-hidden', '#popoverPeriodList .fd-popover__body')">
+                  <i class="sap-icon--slim-arrow-down"></i>
+                  <span class="fd-button__text" id="lblSelectedPeriod" title="Zúčtovacie obdobie">Zúčtovacie obdobie</span>
+                </button>
+              </div>
+            
+              <div class="fd-popover__body fd-popover__body--left" aria-hidden="true">
+                <div class="fd-popover__body-header">
+                  <div class="fd-bar fd-bar--cozy fd-bar--header-with-subheader">
+                    <div class="fd-bar__left">
+                      <div class="fd-bar__element">
+                        <button aria-label="Späť" class="fd-button fd-button--transparent" onclick="ui.toggleAttribute('aria-hidden', '#popoverPeriodList .fd-popover__body')">
+                          <i class="sap-icon--navigation-left-arrow"></i>
+                        </button>
+                      </div>
+            
+                      <div class="fd-bar__element">Zúčtovacie obdobie</div>
+                    </div>
+                  </div>
+            
+                  <div class="fd-bar fd-bar--subheader">
+                    <div class="fd-bar__middle">
+                      <div class="fd-input-group">
+                        <input class="fd-input fd-input--compact fd-input-group__input" type="text" name=""
+                          aria-label="Hľadať" placeholder="Hľadať" onkeypress="event.keyCode === 13 && approval.searchPeriod(this.value)">
+                        <span class="fd-input-group__addon fd-input-group__addon--button fd-input-group__addon--compact">
+                          <button class="fd-input-group__button fd-button fd-button--icon fd-button--transparent"
+                            aria-label="Hľadať">
+                            <i class="sap-icon--search"></i>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            
+                <div class="fd-menu-compact" id="divPeriods">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; flex-wrap: wrap; margin: 0.5rem 0;">
+            <div>
+              <div class="fd-card fd-card--table fd-card--compact" role="region" aria-label="Table Card Example 2">
+                <div class="fd-card__content" role="group" aria-label="Card Content">
+                  <table class="fd-table fd-table--compact fd-table--no-horizontal-borders fd-table--no-vertical-borders">
+                    <tbody class="fd-table__body">
+                      <tr class="fd-table__row">
+                        <td class="fd-table__cell">Schválenie partnera</td>
+                        <td class="fd-table__cell" id="approvalApproved"></td>
+                      </tr>
+                      <tr class="fd-table__row">
+                        <td class="fd-table__cell">Schvaľovateľ</td>
+                        <td class="fd-table__cell" id="approvalApprovedBy"></td>
+                      </tr>
+                      <tr class="fd-table__row">
+                        <td class="fd-table__cell">Dátum schválenia</td>
+                        <td class="fd-table__cell" id="approvalDate"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <button
+                    class="fd-button fd-button--positive is-disabled hide-admin"
+                    id="btnApprove"
+                    onclick="!this.classList.contains('is-disabled') && ui.withErrorHandling(approval.approvePeriod)"
+                    style="margin: 0.5rem 0.5rem 0 0.5rem;"
+                  >
+                    <span class="fd-button__text">Schvaľujem report</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div style="align-self: end;">
+
+              <div class="hide-admin" style="display: flex; gap: 0.5rem;">
+                <input class="fd-input" type="text" id="disputeCostPartner" placeholder="Cena" title="Navrhovaná cena" required style="margin: 0; flex: 1;">
+                <input class="fd-input" type="text" id="disputeComment" placeholder="Poznámka" title="Poznámka" required style="margin: 0; flex: 6;">
+                <button id="btnDispute" class="fd-button fd-button--attention is-disabled" onclick="!this.classList.contains('is-disabled') && ui.withErrorHandling(approval.disputeSelected)">
+                  <span class="fd-button__text">Nahlasiť na zmenu</span>
+                </button>
+              </div>
+
+              <div class="hide-partner">
+                <input class="fd-input" type="text" id="disputeCostAdmin" placeholder="Cena" title="Navrhovaná cena" required style="max-width: 5rem">
+
+                <button id="btnAccept" class="fd-button fd-button--positive is-disabled" onclick="!this.classList.contains('is-disabled') && ui.withErrorHandling(approval.acceptSelected)">
+                  <span class="fd-button__text">Potvrdiť zmenu</span>
+                </button>
+
+                <button id="btnDismiss" class="fd-button fd-button--negative is-disabled" onclick="!this.classList.contains('is-disabled') && ui.withErrorHandling(approval.dismissSelected)">
+                  <span class="fd-button__text">Zamietnuť zmenu</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="table-fluid-wrapper">
+            <table class="fd-table fd-table--compact">
+              <thead class="fd-table__header">
+                <th class="fd-table__cell fd-table__cell--checkbox" scope="col">
+                  <input aria-label="checkbox" type="checkbox" class="fd-checkbox fd-checkbox--compact" id="tr1th1" onchange="approval.toggleSelectAll()">
+                  <label class="fd-checkbox__label" for="tr1th1"></label>
+                </th>
+                <th class="fd-table__cell" scope="col">
+                  <div class="fd-table__inner fd-popover popover--right">
+                    Dátum výjazdu
+                  </div>
+                </th>
+                <th class="fd-table__cell" scope="col">
+                  <div class="fd-table__inner fd-popover popover--right">
+                    Č. tiketu
+                    <span
+                      class="fd-popover__control fd-table__icon sap-icon--filter"
+                      aria-controls="popoverTh1"
+                      aria-expanded="true"
+                      aria-haspopup="true"
+                      onclick="ui.toggleAndFocus(this, 'th', '.fd-popover__body', 'aria-hidden', '.input-filter')"
+                      role="button"
+                    ></span>
+                    <div class="fd-popover__body fd-popover__body--right" aria-hidden="true" id="popoverTh1" style="max-width: 120px;">
+                      <div class="fd-popover__wrapper">
+                        <input class="fd-input fd-input--compact input-filter" onkeypress="event.keyCode === 13 && approval.filter('activityCode', this.value, this.parentNode.parentNode)" />
+                      </div>
+                    </div>
+                  </div>
+                </th>
+                <th class="fd-table__cell" scope="col">
+                  <div class="fd-table__inner fd-popover popover--right">
+                    Typ výjazdu
+                    <span
+                      class="fd-popover__control fd-table__icon sap-icon--filter"
+                      aria-controls="popoverTh1"
+                      aria-expanded="true"
+                      aria-haspopup="true"
+                      onclick="ui.toggleAndFocus(this, 'th', '.fd-popover__body', 'aria-hidden', '.input-filter')"
+                      role="button"
+                    ></span>
+                    <div class="fd-popover__body fd-popover__body--right" aria-hidden="true" id="popoverTh1" style="max-width: 120px;">
+                      <div class="fd-popover__wrapper">
+                        <input class="fd-input fd-input--compact input-filter" onkeypress="event.keyCode === 13 && approval.filter('serviceCallTypeName', this.value, this.parentNode.parentNode)" />
+                      </div>
+                    </div>
+                  </div>
+                </th>
+                <th class="fd-table__cell" scope="col">
+                  <div class="fd-table__inner fd-popover popover--right">
+                    Zákazník
+                    <span
+                      class="fd-popover__control fd-table__icon sap-icon--filter"
+                      aria-controls="popoverTh1"
+                      aria-expanded="true"
+                      aria-haspopup="true"
+                      onclick="ui.toggleAndFocus(this, 'th', '.fd-popover__body', 'aria-hidden', '.input-filter')"
+                      role="button"
+                    ></span>
+                    <div class="fd-popover__body fd-popover__body--right" aria-hidden="true" id="popoverTh1" style="max-width: 120px;">
+                      <div class="fd-popover__wrapper">
+                        <input class="fd-input fd-input--compact input-filter" onkeypress="event.keyCode === 13 && approval.filter('customer', this.value, this.parentNode.parentNode)" />
+                      </div>
+                    </div>
+                  </div>
+                </th>
+                <th class="fd-table__cell" scope="col">
+                  <div class="fd-table__inner fd-popover popover--right">
+                    Stav
+                    <span
+                      class="fd-popover__control fd-table__icon sap-icon--filter"
+                      aria-controls="popoverTh1"
+                      aria-expanded="true"
+                      aria-haspopup="true"
+                      onclick="ui.toggleAndFocus(this, 'th', '.fd-popover__body', 'aria-hidden', '.input-filter')"
+                      role="button"
+                    ></span>
+                    <div class="fd-popover__body fd-popover__body--right" aria-hidden="true" id="popoverTh1" style="max-width: 120px;">
+                      <div class="fd-popover__wrapper">
+                        <input class="fd-input fd-input--compact input-filter" onkeypress="event.keyCode === 13 && approval.filter('serviceCallCostStatus', this.value, this.parentNode.parentNode)" />
+                      </div>
+                    </div>
+                  </div>
+                </th>
+                <th class="fd-table__cell" scope="col">
+                  <div class="fd-table__inner fd-popover popover--right">
+                    Dĺžka práce v hod
+                  </div>
+                </th>
+                <th class="fd-table__cell" scope="col">
+                  <div class="fd-table__inner fd-popover popover--right">
+                    Cena za úkon
+                  </div>
+                </th>
+                <th class="fd-table__cell" scope="col">
+                  <div class="fd-table__inner fd-popover popover--right">
+                    Dĺžka cesty v km
+                  </div>
+                </th>
+                <th class="fd-table__cell" scope="col">
+                  <div class="fd-table__inner fd-popover popover--right">
+                    Cena za cestu
+                </th>
+                <th class="fd-table__cell" scope="col">
+                  <div class="fd-table__inner fd-popover popover--right">
+                    Spolu
+                  </div>
+                </th>
+                <th class="fd-table__cell" scope="col">
+                  <div class="fd-table__inner fd-popover popover--right">
+                    Navrhovaná cena za úkon
+                    <span
+                      class="fd-popover__control fd-table__icon sap-icon--filter"
+                      aria-controls="popoverTh1"
+                      aria-expanded="true"
+                      aria-haspopup="true"
+                      onclick="ui.toggleAndFocus(this, 'th', '.fd-popover__body', 'aria-hidden', '.input-filter')"
+                      role="button"
+                    ></span>
+                    <div class="fd-popover__body fd-popover__body--right" aria-hidden="true" id="popoverTh1" style="max-width: 120px;">
+                      <div class="fd-popover__wrapper">
+                        <input class="fd-input fd-input--compact input-filter" onkeypress="event.keyCode === 13 && approval.filter('serviceCallCost', this.value, this.parentNode.parentNode)" />
+                      </div>
+                    </div>
+                  </div>
+                </th>
+                <th class="fd-table__cell" scope="col">
+                  <div class="fd-table__inner fd-popover popover--right">
+                    Poznámka partnera
+                    <span
+                      class="fd-popover__control fd-table__icon sap-icon--filter"
+                      aria-controls="popoverTh1"
+                      aria-expanded="true"
+                      aria-haspopup="true"
+                      onclick="ui.toggleAndFocus(this, 'th', '.fd-popover__body', 'aria-hidden', '.input-filter')"
+                      role="button"
+                    ></span>
+                    <div class="fd-popover__body fd-popover__body--right" aria-hidden="true" id="popoverTh1" style="max-width: 120px;">
+                      <div class="fd-popover__wrapper">
+                        <input class="fd-input fd-input--compact input-filter" onkeypress="event.keyCode === 13 && approval.filter('serviceCallComment', this.value, this.parentNode.parentNode)" />
+                      </div>
+                    </div>
+                  </div>
+                </th>
+              </thead>
+              <tbody class="fd-table__body approval"></tbody>
+            </table>
+          </div>
+        
+          <div class="fd-pagination hidden">
+            <nav class="fd-pagination__nav">
+              <label class="fd-form-label fd-pagination__label" for="input-page">Strana:</label>
+              <input
+                id="input-page"
+                class="fd-input fd-input--compact fd-pagination__input"
+                type="number"
+                min="1"
+                value="1"
+                required
+                onkeypress="event.keyCode === 13 && approval.goToPage(this.value)"
+              />
+            </nav>
+            <div class="fd-pagination__total">
+              <span id="total-results" class="fd-form-label fd-pagination__total-label"></span>
+            </div>
+          </div>
+        </section>
+
+
+        <section id="section-warehouse" class="section-hidden screen" style="min-height: 700px;">
+          <div class="buttons">
+            <div class="fd-popover fd-popover--left fd-user-menu" id="popoverWarehouseList">
+              <div class="fd-popover__control">
+                <button class="fd-button fd-button--menu" onclick="ui.toggleAttribute('aria-hidden', '#popoverWarehouseList .fd-popover__body')">
+                  <i class="sap-icon--slim-arrow-down"></i>
+                  <span class="fd-button__text" id="lblSelectedWarehouse">Sklad</span>
+                </button>
+              </div>
+            
+              <div class="fd-popover__body fd-popover__body--left" aria-hidden="true">
+                <div class="fd-popover__body-header">
+                  <div class="fd-bar fd-bar--cozy fd-bar--header-with-subheader">
+                    <div class="fd-bar__left">
+                      <div class="fd-bar__element">
+                        <button aria-label="Späť" class="fd-button fd-button--transparent" onclick="ui.toggleAttribute('aria-hidden', '#popoverWarehouseList .fd-popover__body')">
+                          <i class="sap-icon--navigation-left-arrow"></i>
+                        </button>
+                      </div>
+            
+                      <div class="fd-bar__element">Sklady</div>
+                    </div>
+                  </div>
+            
+                  <div class="fd-bar fd-bar--subheader">
+                    <div class="fd-bar__middle">
+                      <div class="fd-input-group">
+                        <input class="fd-input fd-input--compact fd-input-group__input" type="text" name=""
+                          aria-label="Hľadať" placeholder="Hľadať" onkeypress="event.keyCode === 13 && warehouse.searchWarehouse(this.value)">
+                        <span class="fd-input-group__addon fd-input-group__addon--button fd-input-group__addon--compact">
+                          <button class="fd-input-group__button fd-button fd-button--icon fd-button--transparent"
+                            aria-label="Hľadať">
+                            <i class="sap-icon--search"></i>
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            
+                <div class="fd-user-menu__body fd-user-menu__body--no-padding" id="divWarehouses">
+                </div>
+              </div>
+            </div>
+
+            <div style="float: right">
+              <button class="fd-button fd-button--negative" onclick="warehouse.setDefunct(true)">
+                <span class="fd-button__text">Označiť ako pokazené</span>
+              </button>
+
+              <button class="fd-button fd-button--positive" onclick="warehouse.setDefunct(false)">
+                <span class="fd-button__text">Zrušiť pokazené</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="table-fluid-wrapper">
+            <table class="fd-table fd-table--compact">
+              <thead class="fd-table__header">
+                <tr class="fd-table__row">
+                  <th class="fd-table__cell fd-table__cell--checkbox" scope="col">
+                    <input aria-label="checkbox" type="checkbox" class="fd-checkbox fd-checkbox--compact" id="tr1th1" onchange="warehouse.toggleSelectAll()">
+                    <label class="fd-checkbox__label" for="tr1th1"></label>
+                  </th>
+                  <th class="fd-table__cell" scope="col">
+                    <div class="fd-table__inner fd-popover popover--right">
+                      Meno položky
+                      <span
+                        class="fd-popover__control fd-table__icon sap-icon--filter"
+                        aria-controls="popoverTh1"
+                        aria-expanded="true"
+                        aria-haspopup="true"
+                        onclick="ui.toggleAndFocus(this, 'th', '.fd-popover__body', 'aria-hidden', '.input-filter')"
+                        role="button"
+                      ></span>
+                      <div class="fd-popover__body fd-popover__body--right" aria-hidden="true" id="popoverTh1" style="max-width: 120px;">
+                        <div class="fd-popover__wrapper">
+                          <input class="fd-input fd-input--compact input-filter" onkeypress="event.keyCode === 13 && warehouse.filter('Meno_polozky', this.value, this.parentNode.parentNode)" />
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th class="fd-table__cell" scope="col">
+                    <div class="fd-table__inner fd-popover popover--right">
+                      Názov
+                      <span
+                        class="fd-popover__control fd-table__icon sap-icon--filter"
+                        aria-controls="popoverTh1"
+                        aria-expanded="true"
+                        aria-haspopup="true"
+                        onclick="ui.toggleAndFocus(this, 'th', '.fd-popover__body', 'aria-hidden', '.input-filter')"
+                        role="button"
+                      ></span>
+                      <div class="fd-popover__body fd-popover__body--right" aria-hidden="true" id="popoverTh1">
+                        <div class="fd-popover__wrapper">
+                          <input class="fd-input fd-input--compact input-filter" onkeypress="event.keyCode === 13 && warehouse.filter('Nazov', this.value, this.parentNode.parentNode)" />
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th class="fd-table__cell" scope="col">
+                    <div class="fd-table__inner">
+                      Dátum pridania na sklad
+                    </div>
+                  </th>
+                  <th class="fd-table__cell" scope="col">
+                    <div class="fd-table__inner fd-popover popover--right">
+                      HIM
+                      <span
+                        class="fd-popover__control fd-table__icon sap-icon--filter"
+                        aria-controls="popoverTh1"
+                        aria-expanded="true"
+                        aria-haspopup="true"
+                        onclick="ui.toggleAndFocus(this, 'th', '.fd-popover__body', 'aria-hidden', '.input-filter')"
+                        role="button"
+                      ></span>
+                      <div class="fd-popover__body fd-popover__body--right" aria-hidden="true" id="popoverTh1">
+                        <div class="fd-popover__wrapper">
+                          <input class="fd-input fd-input--compact input-filter" onkeypress="event.keyCode === 13 && warehouse.filter('HIM', this.value, this.parentNode.parentNode)" />
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th class="fd-table__cell" scope="col">
+                    <div class="fd-table__inner fd-popover popover--right">
+                      Sériové číslo
+                      <span
+                        class="fd-popover__control fd-table__icon sap-icon--filter"
+                        aria-controls="popoverTh1"
+                        aria-expanded="true"
+                        aria-haspopup="true"
+                        onclick="ui.toggleAndFocus(this, 'th', '.fd-popover__body', 'aria-hidden', '.input-filter')"
+                        role="button"
+                      ></span>
+                      <div class="fd-popover__body fd-popover__body--right" aria-hidden="true" id="popoverTh1">
+                        <div class="fd-popover__wrapper">
+                          <input class="fd-input fd-input--compact input-filter" onkeypress="event.keyCode === 13 && warehouse.filter('SerialNumber', this.value, this.parentNode.parentNode)" />
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th class="fd-table__cell" scope="col">
+                    <div class="fd-table__inner fd-popover popover--right">
+                      MAC adresa
+                      <span
+                        class="fd-popover__control fd-table__icon sap-icon--filter"
+                        aria-controls="popoverTh1"
+                        aria-expanded="true"
+                        aria-haspopup="true"
+                        onclick="ui.toggleAndFocus(this, 'th', '.fd-popover__body', 'aria-hidden', '.input-filter')"
+                        role="button"
+                      ></span>
+                      <div class="fd-popover__body fd-popover__body--right" aria-hidden="true" id="popoverTh1">
+                        <div class="fd-popover__wrapper">
+                          <input class="fd-input fd-input--compact input-filter" onkeypress="event.keyCode === 13 && warehouse.filter('MAC_adresa', this.value, this.parentNode.parentNode)" />
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th class="fd-table__cell" scope="col">
+                    <div class="fd-table__inner fd-popover fd-popover--right">
+                      Pokazené
+                      <span
+                        class="fd-popover__control fd-table__icon sap-icon--filter"
+                        aria-controls="popoverTh1"
+                        aria-expanded="true"
+                        aria-haspopup="true"
+                        onclick="ui.toggleAttribute('aria-hidden', '.fd-popover__body', this.parentNode)"
+                        role="button"
+                      ></span>
+                      <div class="fd-popover__body fd-popover__body--right" aria-hidden="true" id="popoverTh1">
+                        <div class="fd-popover__wrapper">
+                          <div class="fd-form-group fd-form-group--inline">
+                            <div class="fd-form-group__item fd-form-item">
+                              <input type="radio" class="fd-radio" input-filter id="radio-defunct-1" name="radio-defunct" onchange="warehouse.filter('Pokazene', 'TRUE', this.parentNode.parentNode)">
+                              <label class="fd-radio__label" for="radio-defunct-1">
+                                Áno
+                              </label>
+                            </div>
+                            <div class="fd-form-group__item fd-form-item">
+                              <input type="radio" class="fd-radio" input-filter id="radio-defunct-2" name="radio-defunct" onchange="warehouse.filter('Pokazene', 'FALSE', this.parentNode.parentNode)">
+                              <label class="fd-radio__label" for="radio-defunct-2">
+                                Nie
+                              </label>
+                            </div>
+                            <div class="fd-form-group__item fd-form-item">
+                              <input type="radio" class="fd-radio" input-filter id="radio-defunct-3" name="radio-defunct" onchange="warehouse.filter('Pokazene', '', this.parentNode.parentNode)" checked>
+                              <label class="fd-radio__label" for="radio-defunct-3">
+                                Všetky
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="fd-table__body"></tbody>
+            </table>
+          </div>
+
+          <div class="fd-pagination hidden">
+            <nav class="fd-pagination__nav">
+              <label class="fd-form-label fd-pagination__label" for="input-page">Strana:</label>
+              <input
+                id="input-page"
+                class="fd-input fd-input--compact fd-pagination__input"
+                type="number"
+                min="1"
+                value="1"
+                required
+                onkeypress="event.keyCode === 13 && warehouse.goToPage(this.value)"
+              />
+            </nav>
+            <div class="fd-pagination__total">
+              <span id="total-results" class="fd-form-label fd-pagination__total-label"></span>
+            </div>
+          </div>
+        </section>
+
+
+        <section id="section-not-found" class="section-hidden screenw">
+          <h2 class="fd-title fd-title--h2">Page Not Found</h2>
+        </section>
+
+
+        <section
+          id="export-download-dialog"
+          class="fd-dialog-docs-static fd-dialog fd-dialog--active"
+          style="display:none"
+        >
+          <div class="fd-dialog__content fd-dialog__content--s">
+            <header class="fd-dialog__header fd-bar fd-bar--header">
+              <div class="fd-bar__left">
+                <div class="fd-bar__element">
+                  <h2 class="fd-title fd-title--h5">
+                    Export prebehol úspešne
+                  </h2>
+                </div>
+              </div>
+            </header>
+            <div class="fd-dialog__body">
+              <p>Súbor stiahnete tak, že vygenerovaný link otvoríte v novej karte. Názov súboru musí byť uložený s koncovku <code>.xlsx</code>.</p>
+              <a id="export-download-link"></a>
+            </div>
+            <footer class="fd-dialog__footer fd-bar fd-bar--footer">
+              <div class="fd-bar__right">
+                <div class="fd-bar__element">
+                  <button
+                    class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact"
+                    onclick="ui.closeExportDialog()"
+                  >
+                    Zavrieť
+                  </button>
+                </div>
+              </div>
+            </footer>
+          </div>
+        </section>
+
+        <section
+          id="result-dialog"
+          class="fd-dialog-docs-static fd-dialog fd-dialog--active"
+          style="display:none"
+        >
+          <div class="fd-dialog__content fd-dialog__content--s">
+            <header class="fd-dialog__header fd-bar fd-bar--header">
+              <div class="fd-bar__left">
+                <div class="fd-bar__element">
+                  <h2 class="fd-title fd-title--h5" id="result-dialog-title"></h2>
+                </div>
+              </div>
+            </header>
+            <div class="fd-dialog__body">
+              <p id="result-dialog-messge"></p>
+              <pre id="result-dialog-code-pre"><code id="result-dialog-code"></code></pre>
+            </div>
+            <footer class="fd-dialog__footer fd-bar fd-bar--footer">
+              <div class="fd-bar__right">
+                <div class="fd-bar__element">
+                  <button
+                    class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact"
+                    onclick="ui.closeResultDialog()"
+                  >
+                    Zavrieť
+                  </button>
+                </div>
+              </div>
+            </footer>
+          </div>
+        </section>
+
+        <section
+          id="access-rejected-dialog"
+          class="fd-dialog-docs-static fd-dialog fd-dialog--active"
+          style="display:none"
+        >
+          <div class="fd-dialog__content fd-dialog__content--s">
+            <header class="fd-dialog__header fd-bar fd-bar--header">
+              <div class="fd-bar__left">
+                <div class="fd-bar__element">
+                  <h2>Táto sekcia je nedostupná</h2>
+                </div>
+              </div>
+            </header>
+            <div class="fd-dialog__body">
+              <p>Táto sekcia nie je prístupná momentálne prihlasenému používateľovi.</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/fsm-shell@1.15.3/release/fsm-shell-client.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@luigi-project/client@1.21.0/luigi-client.js"></script>
+    <script src="../vendor/moment.min.js"></script>
+    <script src="../vendor/exceljs.min.js"></script>
+    <script src="common.js"></script>
+    <script src="ui.js"></script>
+    <script src="price-list.js"></script>
+    <script src="price-list-km.js"></script>
+    <script src="authorization-supplier.js"></script>
+    <script src="warehouse.js"></script>
+    <script src="approval.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>
