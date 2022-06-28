@@ -1,0 +1,71 @@
+ {
+  "name": "Nástroje",
+  "provider": "Anodius, a.s.",
+  "description": "Nástroje",
+  "version": "1.0.0",
+  "icon": "https://raw.githubusercontent.com/f-kaps/fsm-ext-demo-uf4jra/main/icon.svg",
+  "useShellSDK": true,
+  "outletPositions": [
+		"SHELL_HOME_SCREEN"
+	],
+  "extensionPolicies": [
+    "allow-downloads"
+  ],
+  "shellNavigation": {
+    "icon": "activities",
+    "sideNavigation": [
+      {
+        "pathSegment": "price-list",
+        "labelTranslations": [
+          {
+            "lang": "sk",
+            "value": "Cenníky"
+          }
+        ],
+        "viewUrl": "/#/price-list",
+        "icon": "per-diem",
+        "isDefault": true,
+        "children": []
+      },
+      {
+        "pathSegment": "authorization-supplier",
+        "labelTranslations": [
+          {
+            "lang": "sk",
+            "value": "Heslá pre partnerov"
+          }
+        ],
+        "viewUrl": "/#/authorization-supplier",
+        "icon": "activity-individual",
+        "isDefault": false,
+        "children": []
+      },
+      {
+        "pathSegment": "approval",
+        "labelTranslations": [
+          {
+            "lang": "sk",
+            "value": "Schvaľovanie"
+          }
+        ],
+        "viewUrl": "/#/approval",
+        "icon": "approvals",
+        "isDefault": false,
+        "children": []
+      },
+      {
+        "pathSegment": "warehouse",
+        "labelTranslations": [
+          {
+            "lang": "sk",
+            "value": "Sklad"
+          }
+        ],
+        "viewUrl": "/#/warehouse",
+        "icon": "customer-order-entry",
+        "isDefault": false,
+        "children": []
+      }
+    ]
+  }
+}
