@@ -258,7 +258,7 @@
       .forEach(entry => {
         worksheet.addRow(COLUMNS.map(({ key }) => entry[key]));
       });
-    /** 
+     
     const link = document.createElement('a');
     link.style = "display: none";
     link.href = ui.createDownloadLink(await workbook.xlsx.writeBuffer()); // We have a fallback here.
@@ -266,7 +266,7 @@
 
     //document.body.appendChild(link);
     link.click();
-    link.remove(); */
+    link.remove(); 
   }
 
   return {
