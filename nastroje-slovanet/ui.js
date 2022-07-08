@@ -10,7 +10,7 @@
     const link = document.getElementById('export-download-link')
     link.href = link.innerText = url;
 
-    document.getElementById('export-download-dialog').style = '';
+    document.getElementById('export-download-dialog').style = 'display:none';
 
     return url;
   }
