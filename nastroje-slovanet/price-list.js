@@ -325,7 +325,7 @@
     link.href = ui.createDownloadLink(await workbook.xlsx.writeBuffer()); // We have a fallback here.
     link.download = 'cennik.xlsx';
 
-    document.body.appendChild(link);
+    //document.body.appendChild(link);
     link.click();
     link.remove();
   }
