@@ -456,6 +456,24 @@ const approval = (() => {
     state.currentPage = inputPage.value = table.currentPage;
     inputPage.setAttribute('max', table.lastPage);
     document.getElementById('total-results').innerText = `${table.lastPage} strán, ${table.totalObjectCount} riadkov`;
+
+    /**
+     * 2022.07.11 Tamas Fordos
+     * pagination arrows:
+     */
+     const paginationArrowLeft = document.getElementById('pagination-left-a');
+     if (state.currentPage < 2) {
+       paginationArrowLeft.classList.add('hidden');
+     } else {
+       paginationArrowLeft.classList.remove('hidden');
+     }
+ 
+     const paginationArrowRight = document.getElementById('pagination-right-a');
+     if (inputPage.value == table.lastPage) {
+      paginationArrowRight.classList.add('hidden');
+     } else {
+      paginationArrowRight.classList.remove('hidden');
+     }
   }
 
   async function onNavigate() {
@@ -509,6 +527,21 @@ const approval = (() => {
     state.currentPage = page;
 
     await renderTable();
+  }
+
+  /**
+   * 2022.07.11 Tamas Fordos
+   * function for pagination arrows
+   * @param {string} direction 
+   */
+  async function goToPageArrow(direction) {
+    var pageNumber = 0;
+    if (direction === 'left') {
+      pageNumber = parseInt(document.getElementById('input-page').value, 10) - 1;
+    } else if (direction === 'right') {
+      pageNumber = parseInt(document.getElementById('input-page').value, 10) + 1;
+    }
+    await goToPage(pageNumber);
   }
 
   /**
@@ -807,6 +840,7 @@ const approval = (() => {
     approvePeriod,
     onNavigate,
     goToPage,
+    goToPageArrow,
     filter,
     toggleSelectAll,
     acceptSelected,

@@ -290,10 +290,31 @@
       pagination.classList.remove('hidden');
     }
 
-    const inputPage = document.getElementById('input-page');
+    
+
+    const inputPage = document.getElementById('input-page-w');
     state.currentPage = inputPage.value = warehouse.currentPage;
     inputPage.setAttribute('max', warehouse.lastPage);
-    document.getElementById('total-results').innerText = `${warehouse.lastPage} strán, ${warehouse.totalObjectCount} riadkov`;
+    const totalLabel = document.getElementById('total-results-w');
+    totalLabel.innerText = `${warehouse.lastPage} strán, ${warehouse.totalObjectCount} riadkov`;
+
+    /**
+     * 2022.07.11 Tamas Fordos
+     * pagination arrows:
+     */
+     const paginationArrowLeft = document.getElementById('pagination-left-w');
+     if (state.currentPage < 2) {
+       paginationArrowLeft.classList.add('hidden');
+     } else {
+       paginationArrowLeft.classList.remove('hidden');
+     }
+ 
+     const paginationArrowRight = document.getElementById('pagination-right-w');
+     if (inputPage.value == warehouse.lastPage) {
+      paginationArrowRight.classList.add('hidden');
+     } else {
+      paginationArrowRight.classList.remove('hidden');
+     }
   }
 
   async function onNavigate() {
@@ -341,6 +362,21 @@
     state.currentPage = page;
 
     await renderTable();
+  }
+
+  /**
+   * 2022.07.11 Tamas Fordos
+   * function for pagination arrows
+   * @param {string} direction 
+   */
+  async function goToPageArrow(direction) {
+    var pageNumber = 0;
+    if (direction === 'left') {
+      pageNumber = parseInt(document.getElementById('input-page-w').value, 10) - 1;
+    } else if (direction === 'right') {
+      pageNumber = parseInt(document.getElementById('input-page-w').value, 10) + 1;
+    }
+    await goToPage(pageNumber);
   }
 
   /**
@@ -436,6 +472,7 @@
     searchWarehouse,
     onNavigate,
     goToPage,
+    goToPageArrow,
     filter,
     toggleSelectAll,
     setDefunct,

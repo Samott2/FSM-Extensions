@@ -102,6 +102,29 @@ html {
   display: none;
 }
 
+.hidden {
+  display: none;
+}
+
+.pagination-al.hidden {
+  display: none;
+}
+
+.pagination-ar.hidden {
+  display: none;
+}
+
+#pagination-left-w #pagination-right-w {
+  color: #696969;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
+#pagination-left-w #pagination-right-w a:hover:not(.active) {
+  background-color: #d3d3d3;
+}
+
 #section-warehouse .buttons {
   margin-bottom: 10px;
 }

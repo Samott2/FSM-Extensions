@@ -375,7 +375,8 @@
         
           <div class="fd-pagination hidden">
             <nav class="fd-pagination__nav">
-              <label class="fd-form-label fd-pagination__label" for="input-page">Strana:</label>
+              <!--<label class="fd-form-label fd-pagination__label" for="input-page">Strana:</label>-->
+              <a id="pagination-left-a" class="pagination-al hidden" href="#" onclick="approval.goToPageArrow('left')" style="text-decoration: none; padding: 8px 16px;">&laquo;</a>
               <input
                 id="input-page"
                 class="fd-input fd-input--compact fd-pagination__input"
@@ -385,6 +386,7 @@
                 required
                 onkeypress="event.keyCode === 13 && approval.goToPage(this.value)"
               />
+              <a id="pagination-right-a" class="pagination-ar hidden" href="#" onclick="approval.goToPageArrow('right')" style="text-decoration: none; padding: 8px 16px;">&raquo;</a>
             </nav>
             <div class="fd-pagination__total">
               <span id="total-results" class="fd-form-label fd-pagination__total-label"></span>
@@ -597,9 +599,10 @@
 
           <div class="fd-pagination hidden">
             <nav class="fd-pagination__nav">
-              <label class="fd-form-label fd-pagination__label" for="input-page">Strana:</label>
+              <!--<label for="input-page-w">Strana:</label>-->
+              <a id="pagination-left-w" class="pagination-al hidden" href="#" onclick="warehouse.goToPageArrow('left')" style="text-decoration: none; padding: 8px 16px;">&laquo;</a>
               <input
-                id="input-page"
+                id="input-page-w"
                 class="fd-input fd-input--compact fd-pagination__input"
                 type="number"
                 min="1"
@@ -607,9 +610,10 @@
                 required
                 onkeypress="event.keyCode === 13 && warehouse.goToPage(this.value)"
               />
+              <a id="pagination-right-w" class="pagination-ar hidden" href="#" onclick="warehouse.goToPageArrow('right')" style="text-decoration: none; padding: 8px 16px;">&raquo;</a>
             </nav>
             <div class="fd-pagination__total">
-              <span id="total-results" class="fd-form-label fd-pagination__total-label"></span>
+              <span id="total-results-w" class="fd-form-label fd-pagination__total-label"></span>
             </div>
           </div>
         </section>
