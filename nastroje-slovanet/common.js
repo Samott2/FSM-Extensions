@@ -227,7 +227,46 @@
     if (canAccessUdoMetaResult != null) {
       return canAccessUdoMetaResult;
     }
+/**
+ * start of edit, 14.07.2022
+ * Tamas Fordos
+ */
+    const context = await common.getContext();
 
+    const response = await fetch(
+      'https://eu.coresuite.com/api/query/v1?' + new URLSearchParams({
+        ...await common.getSearchParams(),
+        dtos: 'Person.24',
+      }),
+      {
+        method: 'POST',
+        headers: await common.getHeaders(),
+        body: JSON.stringify({
+          query: `
+            SELECT
+              p.crowdType as crowdType
+            FROM Person p
+            WHERE p.userName = '${context.user}'
+            LIMIT 1
+          `,
+        }),
+      },
+    );
+
+    const responseBody = await response.json(); // 
+    const userCrowdType = responseBody.data[0].crowdType;
+
+    if (userCrowdType == 'PARTNER_ADMIN' || userCrowdType == 'PARTNER_TECHNICIAN') {
+      return (canAccessUdoMetaResult = false);
+    } else {
+      return (canAccessUdoMetaResult = true);
+    }
+
+    /**
+ * end of edit, 14.07.2022
+ * Tamas Fordos
+ */
+/*
     const response = await fetch(
       'https://eu.coresuite.com/api/query/v1?' + new URLSearchParams({
         ...await common.getSearchParams(),
@@ -253,7 +292,7 @@
       return (canAccessUdoMetaResult = false);
     }
 
-    return (canAccessUdoMetaResult = true);
+    return (canAccessUdoMetaResult = true); */
   }
 
   return {
