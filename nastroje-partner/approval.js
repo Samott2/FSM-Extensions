@@ -320,6 +320,10 @@ const approval = (() => {
   }
 
   async function renderTable() {
+	// 16. 11. 2022, T. Fordos
+	// Suma na schvalenie: sum(table.data[n].totalCost)  
+	let allCostToApproval = 0;
+	
     const approvalStatus = state.selectedPeriodUdoId
       ? state.periods.find(period => period.udoId === state.selectedPeriodUdoId)
       : undefined;
@@ -372,6 +376,18 @@ const approval = (() => {
 	console.log('::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
 	console.log('::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
 	console.log(table.data);
+	
+	// 16. 11. 2022, T. Fordos
+	// Suma na schvalenie: sum(table.data[i].totalCost) allCostToApproval €
+	if (table.data.length) {
+		for (let i = 0; i < table.data.length; i++) {
+			allCostToApproval += table.data[i].totalCost;
+		}
+	}
+	console.log({allCostToApproval});
+	document.getElementById('approvalMoney').innerText = allCostToApproval > 0 ? `${allCostToApproval} €` : '';
+
+		
 
     const trs = table.data.map((tableEntry, iRow) => {
       const trDocument = domParser.parseFromString(`
