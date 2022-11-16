@@ -370,23 +370,16 @@ const approval = (() => {
 
     const domParser = new DOMParser();
 	
-	console.log('::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
-	console.log('::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
-	console.log(table);
-	console.log('::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
-	console.log('::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
-	console.log(table.data);
-	
-	// 16. 11. 2022, T. Fordos
+	// 16. 11. 2022, T. Fordos - start
 	// Suma na schvalenie: sum(table.data[i].totalCost) allCostToApproval €
 	if (table.data.length) {
 		for (let i = 0; i < table.data.length; i++) {
 			allCostToApproval += table.data[i].totalCost;
 		}
 	}
-	console.log({allCostToApproval});
-	document.getElementById('approvalMoney').innerText = allCostToApproval > 0 ? `${allCostToApproval} €` : '';
 
+	document.getElementById('approvalMoney').innerText = allCostToApproval > 0 ? `${allCostToApproval.toFixed(2)} €` : '';
+	// 16. 11. 2022, T. Fordos - end
 		
 
     const trs = table.data.map((tableEntry, iRow) => {
