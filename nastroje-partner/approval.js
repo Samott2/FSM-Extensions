@@ -365,6 +365,13 @@ const approval = (() => {
       };
 
     const domParser = new DOMParser();
+	
+	console.log('::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
+	console.log('::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
+	console.log(table);
+	console.log('::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
+	console.log('::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
+	console.log(table.data);
 
     const trs = table.data.map((tableEntry, iRow) => {
       const trDocument = domParser.parseFromString(`
