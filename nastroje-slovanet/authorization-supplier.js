@@ -5,6 +5,7 @@
     { key: 'z_f_co_dodavatel', title: 'Názov business partnera' }, // needs to be remapped: id <--> name
     { key: 'z_f_co_pass_master', title: 'Heslo master' },
     { key: 'z_f_co_pass_user', title: 'Heslo partner' },
+	{ key: 'z_f_co_pass_support', title: 'Heslo dispečera'}
   ];
 
   async function fetchAuthorizationSupplier() {
@@ -28,7 +29,8 @@
                 uv.id AS id,
                 bp.name AS z_f_co_dodavatel,
                 uv.udf.z_f_co_pass_master AS z_f_co_pass_master,
-                uv.udf.z_f_co_pass_user AS z_f_co_pass_user
+                uv.udf.z_f_co_pass_user AS z_f_co_pass_user,
+				uv.udf.z_f_co_pass_support AS z_f_co_pass_support
               FROM UdoMeta um
               JOIN UdoValue uv
                 ON um.id = uv.meta
@@ -264,7 +266,7 @@
     const link = document.createElement('a');
     link.style = "display: none";
     link.href = ui.createDownloadLink(await workbook.xlsx.writeBuffer()); // We have a fallback here.
-    link.download = 'cennik.xlsx';
+    link.download = 'FSM_hesla.xlsx';
 
     document.body.appendChild(link);
     link.click();

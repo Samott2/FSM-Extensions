@@ -94,7 +94,7 @@ const approval = (() => {
     const response = await fetch(
       'https://eu.coresuite.com/api/query/v1?' + new URLSearchParams({
         ...await common.getSearchParams(),
-        dtos: 'Activity.40;BusinessPartner.23;Mileage.17;Person.24;ServiceAssignment.28;ServiceCall.26;TimeEffort.16;UdoValue.9',
+        dtos: 'Activity.40;Approval.14;BusinessPartner.23;Mileage.17;ServiceCall.26;TimeEffort.16;UdoValue.9;UnifiedPerson.12',
         pageSize,
         page,
       }),
@@ -109,41 +109,43 @@ const approval = (() => {
               sc.id AS serviceCallId,
               sc.typeCode AS serviceCallTypeCode,
               sc.typeName AS serviceCallTypeName,
+              sc.businessPartner AS businessPartnerId,
               bp.name AS customer,
-              mileage.distance AS mileageDistance,
-              priceListUdo.udf.z_f_co_km AS mileageKmCost,
-              priceListUdo.udf.z_f_co_km * mileage.distance AS mileageCost,
-              effort.id AS timeEffortId,
-              effort.udf.z_f_te_cena_final AS effortCost,
-              DATEDIFF(MINUTE, effort.startDateTime, effort.endDateTime) AS effortDuration,
-              COALESCE(priceListUdo.udf.z_f_co_km, 0) * COALESCE(mileage.distance, 0) + COALESCE(effort.udf.z_f_te_cena_final, 0) AS totalCost,
+              te.id AS timeEffortId,
+              te.startDateTime AS date,
               sc.udf.z_f_sc_request_status AS serviceCallCostStatus,
               sc.udf.z_f_sc_request_poznamka AS serviceCallComment,
               sc.udf.z_f_sc_request_datum_vyjadrenia AS serviceCallCommentDate,
               sc.udf.z_f_sc_request_cena AS serviceCallCost,
-              effort.startDateTime AS date,
-              sc.businessPartner AS businessPartnerId
+              priceList.udf.z_f_co_km AS mKmCost,
+              COALESCE(m.distance*priceList.udf.z_f_co_km, 0) AS mileageCost,
+              COALESCE(te.udf.z_f_te_cena_final,0) AS effortCost,
+              COALESCE(m.distance, 0) AS mileageDistance,
+              DATEDIFF(MINUTE, te.startDateTime, te.endDateTime) AS effortDuration,
+              COALESCE(priceList.udf.z_f_co_km, 0) * COALESCE(m.distance, 0) + COALESCE(te.udf.z_f_te_cena_final, 0) AS totalCost
             FROM Activity a
-            JOIN ServiceCall sc
-              ON sc = a.object
-            JOIN ServiceAssignment sa
-              ON sc = sa.object
-            JOIN Person p
-              ON sa.technician = p.id
-            JOIN BusinessPartner bp
+            JOIN ServiceCall sc 
+              ON sc.id = a.object.objectId
+            JOIN BusinessPartner bp 
               ON sc.businessPartner = bp.id
-            LEFT JOIN Mileage mileage
-              ON a = mileage.object
-            LEFT JOIN TimeEffort effort
-              ON a = effort.object
-            JOIN UdoValue priceListUdo
-              ON priceListUdo.udf.z_f_co_dodavatel = p.businessPartner
-              AND priceListUdo.udf.z_f_co_km IS NOT NULL
-            WHERE p.businessPartner = '${businessPartnerId}'
-            AND (effort.startDateTime > '${since}' AND effort.startDateTime < '${until}')
-            AND (mileage IS NOT NULL AND effort IS NOT NULL)
-            ${filtersQuery ? "AND  " + filtersQuery : ""}
-            ORDER BY effort.startDateTime DESC
+            LEFT JOIN Mileage m 
+              ON a.id = m.object.objectId
+            LEFT JOIN TimeEffort te 
+              ON a.id = te.object.objectId
+            JOIN Approval ap 
+              ON te.id = ap.object.objectId
+            JOIN UnifiedPerson p 
+              ON p.id = ap.issuer
+            JOIN UdoValue priceList
+              ON priceList.udf.z_f_co_dodavatel = p.businessPartner 
+            AND priceList.udf.z_f_co_km IS NOT NULL
+            WHERE 
+              (p.businessPartner = '${businessPartnerId}'
+              AND (te.startDateTime >= '${since}' AND te.startDateTime < '${until}')
+              AND ap.decisionStatus = 'APPROVED'
+              AND (m IS NOT NULL AND te IS NOT NULL)) 
+			  ${filtersQuery ? "AND  " + filtersQuery : ""}
+            ORDER BY te.startDateTime DESC
           `,
         }),
       },
@@ -242,7 +244,7 @@ const approval = (() => {
         `).join('\n')}
       </ul>
     `;
-    
+
     const domParser = new DOMParser();
     const ul = domParser
       .parseFromString(html, 'text/html')
@@ -277,7 +279,7 @@ const approval = (() => {
         `).join('\n')}
       </ul>
     `;
-    
+
     const domParser = new DOMParser();
     const ul = domParser
       .parseFromString(html, 'text/html')
@@ -320,6 +322,10 @@ const approval = (() => {
   }
 
   async function renderTable() {
+    // 16. 11. 2022, T. Fordos
+    // Suma na schvalenie: sum(table.data[n].totalCost)  
+    let allCostToApproval = 0;
+
     const approvalStatus = state.selectedPeriodUdoId
       ? state.periods.find(period => period.udoId === state.selectedPeriodUdoId)
       : undefined;
@@ -338,8 +344,8 @@ const approval = (() => {
 
     document.getElementById('approvalApproved').innerText =
       approvalStatus?.approved === 'true' ? 'Áno' :
-      approvalStatus ? 'Nie' :
-      '';
+        approvalStatus ? 'Nie' :
+          '';
     document.getElementById('approvalApprovedBy').innerText = approvalStatus?.approvedByName !== 'null' && approvalStatus?.approvedByName || '';
     document.getElementById('approvalDate').innerText = approvalStatus?.approvalDate !== 'null' && approvalStatus?.approvalDate || '';
 
@@ -365,6 +371,18 @@ const approval = (() => {
       };
 
     const domParser = new DOMParser();
+
+    // 16. 11. 2022, T. Fordos - start
+    // Suma na schvalenie: sum(table.data[i].totalCost) allCostToApproval €
+    if (table.data.length) {
+      for (let i = 0; i < table.data.length; i++) {
+        allCostToApproval += table.data[i].totalCost;
+      }
+    }
+
+    document.getElementById('approvalMoney').innerText = allCostToApproval > 0 ? `${allCostToApproval.toFixed(2)} €` : '';
+    // 16. 11. 2022, T. Fordos - end
+
 
     const trs = table.data.map((tableEntry, iRow) => {
       const trDocument = domParser.parseFromString(`
@@ -429,11 +447,11 @@ const approval = (() => {
 
       const tr = trDocument.querySelector('tr');
 
-      const trClass = 
+      const trClass =
         tableEntry.serviceCallCostStatus === APPROVAL_STATUS.ChangeRequired ? 'change-required' :
-        tableEntry.serviceCallCostStatus === APPROVAL_STATUS.Accepted ? 'accepted' :
-        tableEntry.serviceCallCostStatus === APPROVAL_STATUS.Dismissed ? 'dismissed' :
-        undefined;
+          tableEntry.serviceCallCostStatus === APPROVAL_STATUS.Accepted ? 'accepted' :
+            tableEntry.serviceCallCostStatus === APPROVAL_STATUS.Dismissed ? 'dismissed' :
+              undefined;
       if (trClass) {
         tr.classList.add(trClass);
       }
@@ -461,19 +479,19 @@ const approval = (() => {
      * 2022.07.11 Tamas Fordos
      * pagination arrows:
      */
-     const paginationArrowLeft = document.getElementById('pagination-left-a');
-     if (state.currentPage < 2) {
-       paginationArrowLeft.classList.add('hidden');
-     } else {
-       paginationArrowLeft.classList.remove('hidden');
-     }
- 
-     const paginationArrowRight = document.getElementById('pagination-right-a');
-     if (inputPage.value == table.lastPage) {
+    const paginationArrowLeft = document.getElementById('pagination-left-a');
+    if (state.currentPage < 2) {
+      paginationArrowLeft.classList.add('hidden');
+    } else {
+      paginationArrowLeft.classList.remove('hidden');
+    }
+
+    const paginationArrowRight = document.getElementById('pagination-right-a');
+    if (inputPage.value == table.lastPage) {
       paginationArrowRight.classList.add('hidden');
-     } else {
+    } else {
       paginationArrowRight.classList.remove('hidden');
-     }
+    }
   }
 
   async function onNavigate() {
@@ -736,7 +754,7 @@ const approval = (() => {
           body: JSON.stringify(teUpdates),
         },
       );
-  
+
       if (!responseForTeUpdate.ok) {
         throw new Error(`Failed to update TimeEffort, got status ${responseForTeUpdate.status}`);
       }
