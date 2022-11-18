@@ -94,7 +94,7 @@ const approval = (() => {
     const response = await fetch(
       'https://eu.coresuite.com/api/query/v1?' + new URLSearchParams({
         ...await common.getSearchParams(),
-        dtos: 'Activity.40;BusinessPartner.23;Mileage.17;Person.24;ServiceAssignment.28;ServiceCall.26;TimeEffort.16;UdoValue.9',
+        dtos: 'Activity.40;Approval.14;BusinessPartner.23;Mileage.17;ServiceCall.26;TimeEffort.16;UdoValue.9;UnifiedPerson.12',
         pageSize,
         page,
       }),
@@ -144,6 +144,7 @@ const approval = (() => {
               AND (te.startDateTime >= '${since}' AND te.startDateTime < '${until}')
               AND ap.decisionStatus = 'APPROVED'
               AND (m IS NOT NULL AND te IS NOT NULL)) 
+			  ${filtersQuery ? "AND  " + filtersQuery : ""}
             ORDER BY te.startDateTime DESC
           `,
         }),
