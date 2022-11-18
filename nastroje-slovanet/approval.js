@@ -94,7 +94,7 @@ const approval = (() => {
     const response = await fetch(
       'https://eu.coresuite.com/api/query/v1?' + new URLSearchParams({
         ...await common.getSearchParams(),
-        dtos: 'Activity.40;BusinessPartner.23;Mileage.17;Person.24;ServiceAssignment.28;ServiceCall.26;TimeEffort.16;UdoValue.9',
+        dtos: 'Activity.40;Approval.14;BusinessPartner.23;Mileage.17;ServiceCall.26;TimeEffort.16;UdoValue.9;UnifiedPerson.12',
         pageSize,
         page,
       }),
@@ -109,41 +109,43 @@ const approval = (() => {
               sc.id AS serviceCallId,
               sc.typeCode AS serviceCallTypeCode,
               sc.typeName AS serviceCallTypeName,
+              sc.businessPartner AS businessPartnerId,
               bp.name AS customer,
-              mileage.distance AS mileageDistance,
-              priceListUdo.udf.z_f_co_km AS mileageKmCost,
-              priceListUdo.udf.z_f_co_km * mileage.distance AS mileageCost,
-              effort.id AS timeEffortId,
-              effort.udf.z_f_te_cena_final AS effortCost,
-              DATEDIFF(MINUTE, effort.startDateTime, effort.endDateTime) AS effortDuration,
-              COALESCE(priceListUdo.udf.z_f_co_km, 0) * COALESCE(mileage.distance, 0) + COALESCE(effort.udf.z_f_te_cena_final, 0) AS totalCost,
+              te.id AS timeEffortId,
+              te.startDateTime AS date,
               sc.udf.z_f_sc_request_status AS serviceCallCostStatus,
               sc.udf.z_f_sc_request_poznamka AS serviceCallComment,
               sc.udf.z_f_sc_request_datum_vyjadrenia AS serviceCallCommentDate,
               sc.udf.z_f_sc_request_cena AS serviceCallCost,
-              effort.startDateTime AS date,
-              sc.businessPartner AS businessPartnerId
+              priceList.udf.z_f_co_km AS mKmCost,
+              COALESCE(m.distance*priceList.udf.z_f_co_km, 0) AS mileageCost,
+              COALESCE(te.udf.z_f_te_cena_final,0) AS effortCost,
+              COALESCE(m.distance, 0) AS mileageDistance,
+              DATEDIFF(MINUTE, te.startDateTime, te.endDateTime) AS effortDuration,
+              COALESCE(priceList.udf.z_f_co_km, 0) * COALESCE(m.distance, 0) + COALESCE(te.udf.z_f_te_cena_final, 0) AS totalCost
             FROM Activity a
-            JOIN ServiceCall sc
-              ON sc = a.object
-            JOIN ServiceAssignment sa
-              ON sc = sa.object
-            JOIN Person p
-              ON sa.technician = p.id
-            JOIN BusinessPartner bp
+            JOIN ServiceCall sc 
+              ON sc.id = a.object.objectId
+            JOIN BusinessPartner bp 
               ON sc.businessPartner = bp.id
-            LEFT JOIN Mileage mileage
-              ON a = mileage.object
-            LEFT JOIN TimeEffort effort
-              ON a = effort.object
-            JOIN UdoValue priceListUdo
-              ON priceListUdo.udf.z_f_co_dodavatel = p.businessPartner
-              AND priceListUdo.udf.z_f_co_km IS NOT NULL
-            WHERE p.businessPartner = '${businessPartnerId}'
-            AND (effort.startDateTime > '${since}' AND effort.startDateTime < '${until}')
-            AND (mileage IS NOT NULL AND effort IS NOT NULL)
-            ${filtersQuery ? "AND  " + filtersQuery : ""}
-            ORDER BY effort.startDateTime DESC
+            LEFT JOIN Mileage m 
+              ON a.id = m.object.objectId
+            LEFT JOIN TimeEffort te 
+              ON a.id = te.object.objectId
+            JOIN Approval ap 
+              ON te.id = ap.object.objectId
+            JOIN UnifiedPerson p 
+              ON p.id = ap.issuer
+            JOIN UdoValue priceList
+              ON priceList.udf.z_f_co_dodavatel = p.businessPartner 
+            AND priceList.udf.z_f_co_km IS NOT NULL
+            WHERE 
+              (p.businessPartner = '${businessPartnerId}'
+              AND (te.startDateTime >= '${since}' AND te.startDateTime < '${until}')
+              AND ap.decisionStatus = 'APPROVED'
+              AND (m IS NOT NULL AND te IS NOT NULL)) 
+			  ${filtersQuery ? "AND  " + filtersQuery : ""}
+            ORDER BY te.startDateTime DESC
           `,
         }),
       },
