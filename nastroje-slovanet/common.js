@@ -230,7 +230,7 @@
 /**
  * start of edit, 14.07.2022
  * Tamas Fordos
- */
+ 
     const context = await common.getContext();
 
     const response = await fetch(
@@ -261,12 +261,13 @@
     } else {
       return (canAccessUdoMetaResult = true);
     }
+    */
 
     /**
  * end of edit, 14.07.2022
  * Tamas Fordos
  */
-/*
+
     const response = await fetch(
       'https://eu.coresuite.com/api/query/v1?' + new URLSearchParams({
         ...await common.getSearchParams(),
@@ -292,7 +293,7 @@
       return (canAccessUdoMetaResult = false);
     }
 
-    return (canAccessUdoMetaResult = true); */
+    return (canAccessUdoMetaResult = true); 
   }
 
   return {
