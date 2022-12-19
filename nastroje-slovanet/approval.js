@@ -1,15 +1,4 @@
-//Zapracoval Tomáš P. 19.12.2022
-(() => {
-  let canAccessUdoMetaPromise = null;
-  const onNavigate = async () => {
-    const canAccessUdoMetaResult = await (canAccessUdoMetaPromise || (canAccessUdoMetaPromise = common.canAccessUdoMeta()));
-    if (!canAccessUdoMetaResult) {
-      return ui.showAccessRejectedDialog();
-    }
-  };
-//Zapracoval Tomáš P. 19.12.2022
-  
-const approval = (() => {
+  const approval = (() => {
   const APPROVAL_UDO_META_NAME = 'Schvalovanie';
   const APPROVAL_STATUS = {
     Accepted: 'Zmena akceptovaná',
