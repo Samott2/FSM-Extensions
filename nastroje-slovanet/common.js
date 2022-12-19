@@ -291,7 +291,7 @@
       },
     );
 
-    console.log (response);
+    console.log(response);
     
     if (!response.ok) {
       return (canAccessUdoMetaResult = false);
