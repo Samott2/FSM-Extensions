@@ -1,14 +1,4 @@
-() => {
-  let canAccessUdoMetaPromise = null;
-  const onNavigate = async () => {
-    const canAccessUdoMetaResult = await (canAccessUdoMetaPromise || (canAccessUdoMetaPromise = common.canAccessUdoMeta()));
-    if (!canAccessUdoMetaResult) {
-      return ui.showAccessRejectedDialog();
-    }
-  }
-  };  
-
-const approval = (() => {
+  const approval = (() => {
   const APPROVAL_UDO_META_NAME = 'Schvalovanie';
   const APPROVAL_STATUS = {
     Accepted: 'Zmena akceptovaná',
