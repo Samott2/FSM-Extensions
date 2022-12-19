@@ -268,6 +268,8 @@
  * Tamas Fordos
  */
 
+    const context = await common.getContext();
+    
     const response = await fetch(
       'https://eu.coresuite.com/api/query/v1?' + new URLSearchParams({
         ...await common.getSearchParams(),
